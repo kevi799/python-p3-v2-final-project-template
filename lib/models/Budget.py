@@ -1,88 +1,104 @@
-import sqlite3
-from datetime import datetime
+import click
+from helpers import get_connection
+from models.User import User
+from models.Budget import Budget
 
-class Budget:
-    def __init__(self, id, user_id, amount, category, created_at=None, updated_at=None):
-        self.id = id
-        self.user_id = user_id
-        self.amount = amount
-        self.category = category
-        self.created_at = created_at or datetime.now()
-        self.updated_at = updated_at or datetime.now()
+# User CLI Commands
+@click.group()
+def cli():
+    """Budget Tracker CLI"""
+    pass
 
-    def __repr__(self):
-        return f"Budget(ID: {self.id}, User ID: {self.user_id}, Amount: {self.amount}, Category: {self.category}, Created At: {self.created_at}, Updated At: {self.updated_at})"
+# User CLI Group
+@cli.group()
+def user():
+    """Manage users."""
+    pass
 
-    @classmethod
-    def create_table(cls):
-        """Creates the Budget table in the database."""
-        conn = sqlite3.connect('your_database.db')#####
-        cursor = conn.cursor()
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS budgets (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_id INTEGER,
-                amount REAL,
-                category TEXT,
-                created_at TEXT,
-                updated_at TEXT,
-                FOREIGN KEY(user_id) REFERENCES users(id)
-            )
-        """)
+@user.command("add")
+@click.argument("name")
+@click.argument("email")
+@click.argument("password")
+def add_user(name, email, password):
+    """Add a new user."""
+    hashed_password = User.hash_password(password)
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", (name, email, hashed_password))
         conn.commit()
+        click.echo("User added successfully!")
+    except Exception as e:
+        click.echo(f"Error: {e}")
+    finally:
         conn.close()
 
-    @classmethod
-    def save(cls, user_id, amount, category):
-        """Inserts a new budget entry into the database."""
-        conn = sqlite3.connect('your_database.db')
-        cursor = conn.cursor()
-        created_at = updated_at = datetime.now()
-        cursor.execute("""
-            INSERT INTO budgets (user_id, amount, category, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?)
-        """, (user_id, amount, category, created_at, updated_at))
-        conn.commit()
-        conn.close()
+@user.command("view")
+def view_users():
+    """View all users."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users")
+    rows = cursor.fetchall()
+    conn.close()
+    if rows:
+        for row in rows:
+            user = User(*row)
+            click.echo(user)
+    else:
+        click.echo("No users found.")
 
-    @classmethod
-    def get_all(cls):
-        """Fetches all budget entries from the database."""
-        conn = sqlite3.connect('your_database.db')
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM budgets")
-        rows = cursor.fetchall()
-        conn.close()
-        return [cls(*row) for row in rows]
+@user.command("delete")
+@click.argument("user_id", type=int)
+def delete_user(user_id):
+    """Delete a user."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM users WHERE id = ?", (user_id,))
+    conn.commit()
+    conn.close()
+    click.echo("User deleted successfully.")
 
-    @classmethod
-    def get_by_id(cls, budget_id):
-        """Fetches a budget entry by its ID."""
-        conn = sqlite3.connect('your_database.db')
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM budgets WHERE id = ?", (budget_id,))
-        row = cursor.fetchone()
-        conn.close()
-        return cls(*row) if row else None
+# Budget CLI Group
+@cli.group()
+def budget():
+    """Manage budgets."""
+    pass
 
-    @classmethod
-    def update(cls, budget_id, amount=None, category=None):
-        """Updates an existing budget entry."""
-        conn = sqlite3.connect('your_database.db')
-        cursor = conn.cursor()
-        updated_at = datetime.now()
-        if amount:
-            cursor.execute("UPDATE budgets SET amount = ?, updated_at = ? WHERE id = ?", (amount, updated_at, budget_id))
-        if category:
-            cursor.execute("UPDATE budgets SET category = ?, updated_at = ? WHERE id = ?", (category, updated_at, budget_id))
-        conn.commit()
-        conn.close()
+@budget.command("add")
+@click.argument("user_id", type=int)
+@click.argument("amount", type=float)
+@click.argument("category")
+def add_budget(user_id, amount, category):
+    """Add a new budget."""
+    Budget.save(user_id, amount, category)
+    click.echo("Budget added successfully!")
 
-    @classmethod
-    def delete(cls, budget_id):
-        """Deletes a budget entry by its ID."""
-        conn = sqlite3.connect('your_database.db')
-        cursor = conn.cursor()
-        cursor.execute("DELETE FROM budgets WHERE id = ?", (budget_id,))
-        conn.commit()
-        conn.close()
+@budget.command("view")
+def view_budgets():
+    """View all budgets."""
+    budgets = Budget.get_all()
+    if budgets:
+        for budget in budgets:
+            click.echo(budget)
+    else:
+        click.echo("No budgets found.")
+
+@budget.command("delete")
+@click.argument("budget_id", type=int)
+def delete_budget(budget_id):
+    """Delete a budget."""
+    Budget.delete(budget_id)
+    click.echo("Budget deleted successfully.")
+
+@budget.command("update")
+@click.argument("budget_id", type=int)
+@click.option("--amount", type=float, help="New amount")
+@click.option("--category", type=str, help="New category")
+def update_budget(budget_id, amount, category):
+    """Update an existing budget."""
+    Budget.update(budget_id, amount=amount, category=category)
+    click.echo("Budget updated successfully.")
+
+if __name__ == '__main__':
+    cli()
