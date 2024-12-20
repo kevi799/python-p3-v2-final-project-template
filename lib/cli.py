@@ -15,11 +15,12 @@ def user():
     pass
 
 @user.command("add")
-@click.argument("name")
-@click.argument("email")
-@click.argument("password")
-def add_user(name, email, password):
+def add_user():
     """Add a new user."""
+    name = click.prompt("Enter your name")
+    email = click.prompt("Enter your email")
+    password = click.prompt("Enter your password", hide_input=True)  # hide input for password
+
     hashed_password = User.hash_password(password)
     conn = get_connection()
     cursor = conn.cursor()
@@ -65,10 +66,11 @@ def budget():
     pass
 
 @budget.command("add")
-@click.argument("user_id", type=int)
-@click.argument("amount", type=float)
-def add_budget(user_id, amount):
+def add_budget():
     """Add a budget."""
+    user_id = click.prompt("Enter user ID", type=int)
+    amount = click.prompt("Enter budget amount", type=float)
+
     Budget.save(user_id, amount)
     click.echo("Budget added successfully!")
 
@@ -83,10 +85,11 @@ def view_budget(user_id):
         click.echo("No budget found for this user.")
 
 @budget.command("update")
-@click.argument("user_id", type=int)
-@click.argument("amount", type=float)
-def update_budget(user_id, amount):
+def update_budget():
     """Update a user's budget."""
+    user_id = click.prompt("Enter user ID", type=int)
+    amount = click.prompt("Enter new budget amount", type=float)
+
     Budget.update(user_id, amount)
     click.echo("Budget updated successfully!")
 
@@ -104,12 +107,13 @@ def expense():
     pass
 
 @expense.command("add")
-@click.argument("user_id", type=int)
-@click.argument("amount", type=float)
-@click.argument("description")
-@click.argument("date")
-def add_expense(user_id, amount, description, date):
+def add_expense():
     """Add an expense."""
+    user_id = click.prompt("Enter user ID", type=int)
+    amount = click.prompt("Enter expense amount", type=float)
+    description = click.prompt("Enter expense description")
+    date = click.prompt("Enter expense date (YYYY-MM-DD)")
+
     Expense.save(user_id, amount, description, date)
     click.echo("Expense added successfully!")
 
@@ -131,12 +135,13 @@ def delete_expense(expense_id):
     click.echo("Expense deleted successfully.")
 
 @expense.command("update")
-@click.argument("expense_id", type=int)
-@click.option("--amount", type=float, help="Updated amount")
-@click.option("--description", help="Updated description")
-@click.option("--date", help="Updated date")
-def update_expense(expense_id, amount, description, date):
+def update_expense():
     """Update an expense."""
+    expense_id = click.prompt("Enter expense ID", type=int)
+    amount = click.prompt("Enter new amount", type=float)
+    description = click.prompt("Enter new description")
+    date = click.prompt("Enter new date (YYYY-MM-DD)")
+
     Expense.update(expense_id, amount=amount, description=description, date=date)
     click.echo("Expense updated successfully!")
 
