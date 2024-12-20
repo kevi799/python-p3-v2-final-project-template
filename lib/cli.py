@@ -1,149 +1,162 @@
 import click
-from helpers import get_connection
 from models.User import User
 from models.Budget import Budget
 from models.Expense import Expense
 
+# Sample in-memory databases (replace with actual database logic)
+users = []
+budgets = []
+expenses = []
+
 @click.group()
 def cli():
+    """CLI for managing the application"""
+    click.echo("Database initialized successfully!")
 
-    pass
-
+# User commands
 @cli.group()
 def user():
-
+    """Manage users"""
     pass
 
-@user.command("add")
-def add_user():
- 
+@user.command()
+def add():
+    """Add a new user"""
     name = click.prompt("Enter your name")
     email = click.prompt("Enter your email")
-    password = click.prompt("Enter your password", hide_input=True) 
-
+    password = click.prompt("Enter your password", hide_input=True)
     hashed_password = User.hash_password(password)
-    conn = get_connection()
-    cursor = conn.cursor()
-    try:
-        cursor.execute("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", (name, email, hashed_password))
-        conn.commit()
-        click.echo("User added successfully!")
-    except Exception as e:
-        click.echo(f"Error: {e}")
-    finally:
-        conn.close()
+    new_user = User(len(users) + 1, name, email, hashed_password)
+    users.append(new_user)
+    click.echo(f"User {name} added successfully!")
 
-@user.command("view")
-def view_users():
-    """View all users."""
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM users")
-    rows = cursor.fetchall()
-    conn.close()
-    if rows:
-        for row in rows:
-            user = User(*row)
+@user.command()
+def view():
+    """View all users"""
+    if users:
+        for user in users:
             click.echo(user)
     else:
         click.echo("No users found.")
 
-@user.command("delete")
-@click.argument("user_id", type=int)
-def delete_user(user_id):
-    """Delete a user."""
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("DELETE FROM users WHERE id = ?", (user_id,))
-    conn.commit()
-    conn.close()
-    click.echo("User deleted successfully.")
+@user.command()
+def remove():
+    """Remove a user by ID"""
+    user_id = click.prompt("Enter user ID to remove", type=int)
+    global users
+    users = [u for u in users if u.id != user_id]
+    click.echo(f"User with ID {user_id} removed.")
 
+@user.command()
+def update():
+    """Update a user by ID"""
+    user_id = click.prompt("Enter user ID to update", type=int)
+    user = next((u for u in users if u.id == user_id), None)
+    if user:
+        new_name = click.prompt("Enter new name", default=user.name)
+        new_email = click.prompt("Enter new email", default=user.email)
+        user.name = new_name
+        user.email = new_email
+        click.echo(f"User {user_id} updated successfully!")
+    else:
+        click.echo(f"No user found with ID {user_id}.")
 
+# Budget commands
 @cli.group()
 def budget():
-    """Manage budgets."""
+    """Manage budgets"""
     pass
 
-@budget.command("add")
-def add_budget():
-    """Add a budget."""
-    user_id = click.prompt("Enter user ID", type=int)
+@budget.command()
+def add():
+    """Add a new budget"""
+    name = click.prompt("Enter budget name")
     amount = click.prompt("Enter budget amount", type=float)
+    new_budget = Budget(len(budgets) + 1, name, amount)
+    budgets.append(new_budget)
+    click.echo(f"Budget {name} added successfully!")
 
-    Budget.save(user_id, amount)
-    click.echo("Budget added successfully!")
-
-@budget.command("view")
-@click.argument("user_id", type=int)
-def view_budget(user_id):
-    """View the budget for a specific user."""
-    budget = Budget.get_by_user(user_id)
-    if budget:
-        click.echo(budget)
+@budget.command()
+def view():
+    """View all budgets"""
+    if budgets:
+        for budget in budgets:
+            click.echo(budget)
     else:
-        click.echo("No budget found for this user.")
+        click.echo("No budgets found.")
 
-@budget.command("update")
-def update_budget():
-    """Update a user's budget."""
-    user_id = click.prompt("Enter user ID", type=int)
-    amount = click.prompt("Enter new budget amount", type=float)
+@budget.command()
+def remove():
+    """Remove a budget by ID"""
+    budget_id = click.prompt("Enter budget ID to remove", type=int)
+    global budgets
+    budgets = [b for b in budgets if b.id != budget_id]
+    click.echo(f"Budget with ID {budget_id} removed.")
 
-    Budget.update(user_id, amount)
-    click.echo("Budget updated successfully!")
+@budget.command()
+def update():
+    """Update a budget by ID"""
+    budget_id = click.prompt("Enter budget ID to update", type=int)
+    budget = next((b for b in budgets if b.id == budget_id), None)
+    if budget:
+        new_name = click.prompt("Enter new name", default=budget.name)
+        new_amount = click.prompt("Enter new amount", type=float, default=budget.amount)
+        budget.name = new_name
+        budget.amount = new_amount
+        click.echo(f"Budget {budget_id} updated successfully!")
+    else:
+        click.echo(f"No budget found with ID {budget_id}.")
 
-@budget.command("delete")
-@click.argument("user_id", type=int)
-def delete_budget(user_id):
-    """Delete a user's budget."""
-    Budget.delete(user_id)
-    click.echo("Budget deleted successfully.")
-
-
+# Expense commands
 @cli.group()
 def expense():
-    """Manage expenses."""
+    """Manage expenses"""
     pass
 
-@expense.command("add")
-def add_expense():
-    """Add an expense."""
-    user_id = click.prompt("Enter user ID", type=int)
+@expense.command()
+def add():
+    """Add a new expense"""
+    name = click.prompt("Enter expense name")
     amount = click.prompt("Enter expense amount", type=float)
-    description = click.prompt("Enter expense description")
-    date = click.prompt("Enter expense date (YYYY-MM-DD)")
+    budget_id = click.prompt("Enter associated budget ID", type=int)
+    budget = next((b for b in budgets if b.id == budget_id), None)
+    if budget:
+        new_expense = Expense(len(expenses) + 1, name, amount, budget_id)
+        expenses.append(new_expense)
+        click.echo(f"Expense {name} added successfully!")
+    else:
+        click.echo(f"No budget found with ID {budget_id}.")
 
-    Expense.save(user_id, amount, description, date)
-    click.echo("Expense added successfully!")
-
-@expense.command("view")
-def view_expenses():
-    """View all expenses."""
-    expenses = Expense.get_all()
+@expense.command()
+def view():
+    """View all expenses"""
     if expenses:
         for expense in expenses:
             click.echo(expense)
     else:
         click.echo("No expenses found.")
 
-@expense.command("delete")
-@click.argument("expense_id", type=int)
-def delete_expense(expense_id):
-    """Delete an expense."""
-    Expense.delete(expense_id)
-    click.echo("Expense deleted successfully.")
+@expense.command()
+def remove():
+    """Remove an expense by ID"""
+    expense_id = click.prompt("Enter expense ID to remove", type=int)
+    global expenses
+    expenses = [e for e in expenses if e.id != expense_id]
+    click.echo(f"Expense with ID {expense_id} removed.")
 
-@expense.command("update")
-def update_expense():
-    """Update an expense."""
-    expense_id = click.prompt("Enter expense ID", type=int)
-    amount = click.prompt("Enter new amount", type=float)
-    description = click.prompt("Enter new description")
-    date = click.prompt("Enter new date (YYYY-MM-DD)")
-
-    Expense.update(expense_id, amount=amount, description=description, date=date)
-    click.echo("Expense updated successfully!")
+@expense.command()
+def update():
+    """Update an expense by ID"""
+    expense_id = click.prompt("Enter expense ID to update", type=int)
+    expense = next((e for e in expenses if e.id == expense_id), None)
+    if expense:
+        new_name = click.prompt("Enter new name", default=expense.name)
+        new_amount = click.prompt("Enter new amount", type=float, default=expense.amount)
+        expense.name = new_name
+        expense.amount = new_amount
+        click.echo(f"Expense {expense_id} updated successfully!")
+    else:
+        click.echo(f"No expense found with ID {expense_id}.")
 
 if __name__ == "__main__":
     cli()
