@@ -1,4 +1,3 @@
-# lib/helpers.py
 import sqlite3
 
 def get_connection():
@@ -7,7 +6,7 @@ def get_connection():
     return connection
 
 def init_db():
-    """Initialize the database and create tables."""
+    """Initialize the database by creating the necessary tables if they don't exist."""
     # Establish connection
     connection = get_connection()
     cursor = connection.cursor()
@@ -48,3 +47,6 @@ def init_db():
     connection.commit()
     connection.close()
     print("Database initialized successfully!")
+
+# Call the function to create tables if they don't exist
+init_db()
