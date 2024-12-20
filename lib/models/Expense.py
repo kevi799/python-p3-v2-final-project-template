@@ -1,5 +1,5 @@
-# models/Expense.py
 from helpers import get_connection
+
 class Expense:
     def __init__(self, id, user_id, amount, description, date):
         self.id = id
@@ -27,7 +27,7 @@ class Expense:
         cursor.execute("SELECT * FROM expenses")
         rows = cursor.fetchall()
         conn.close()
-        return [Expense(*row) for row in rows]
+        return [cls(*row) for row in rows]
 
     @classmethod
     def delete(cls, expense_id):

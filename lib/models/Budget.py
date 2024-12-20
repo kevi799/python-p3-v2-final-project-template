@@ -1,4 +1,5 @@
 import sqlite3
+from helpers import get_connection
 
 class Budget:
     def __init__(self, user_id, amount, id=None):
@@ -9,7 +10,7 @@ class Budget:
     @classmethod
     def save(cls, user_id, amount):
         """Save a budget to the database."""
-        conn = sqlite3.connect("budget_tracker.db")
+        conn = get_connection()
         cursor = conn.cursor()
         cursor.execute("INSERT INTO budgets (user_id, amount) VALUES (?, ?)", (user_id, amount))
         conn.commit()
@@ -18,7 +19,7 @@ class Budget:
     @classmethod
     def get_by_user(cls, user_id):
         """Get a budget by user_id."""
-        conn = sqlite3.connect("budget_tracker.db")
+        conn = get_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM budgets WHERE user_id = ?", (user_id,))
         row = cursor.fetchone()
@@ -30,7 +31,7 @@ class Budget:
     @classmethod
     def update(cls, user_id, amount):
         """Update the budget for a user."""
-        conn = sqlite3.connect("budget_tracker.db")
+        conn = get_connection()
         cursor = conn.cursor()
         cursor.execute("UPDATE budgets SET amount = ? WHERE user_id = ?", (amount, user_id))
         conn.commit()
@@ -39,7 +40,7 @@ class Budget:
     @classmethod
     def delete(cls, user_id):
         """Delete a budget by user_id."""
-        conn = sqlite3.connect("budget_tracker.db")
+        conn = get_connection()
         cursor = conn.cursor()
         cursor.execute("DELETE FROM budgets WHERE user_id = ?", (user_id,))
         conn.commit()
@@ -48,7 +49,7 @@ class Budget:
     @classmethod
     def get_all(cls):
         """Get all budgets."""
-        conn = sqlite3.connect("budget_tracker.db")
+        conn = get_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM budgets")
         rows = cursor.fetchall()

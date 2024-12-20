@@ -12,9 +12,10 @@ class User:
 
     @classmethod
     def hash_password(cls, password):
-        # Call gensalt() to generate a salt
+        """Hash a password using bcrypt."""
         salt = bcrypt.gensalt()
         return bcrypt.hashpw(password.encode('utf-8'), salt)
 
     def check_password(self, password):
+        """Check if the given password matches the hashed password."""
         return bcrypt.checkpw(password.encode('utf-8'), self.password_hash)
