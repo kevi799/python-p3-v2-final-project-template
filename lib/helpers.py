@@ -1,9 +1,15 @@
 # lib/helpers.py
-
 import sqlite3
 
-def init_db():
+def get_connection():
+    """Returns a connection to the SQLite database."""
     connection = sqlite3.connect("budget_tracker.db")
+    return connection
+
+def init_db():
+    """Initialize the database and create tables."""
+    # Establish connection
+    connection = get_connection()
     cursor = connection.cursor()
 
     # Create Users table
@@ -38,7 +44,7 @@ def init_db():
     );
     """)
 
+    # Commit changes and close connection
     connection.commit()
     connection.close()
     print("Database initialized successfully!")
-

@@ -6,20 +6,20 @@ from models.Expense import Expense
 
 @click.group()
 def cli():
-    """Personal Budget Tracker CLI"""
+
     pass
 
 @cli.group()
 def user():
-    """Manage users."""
+
     pass
 
 @user.command("add")
 def add_user():
-    """Add a new user."""
+ 
     name = click.prompt("Enter your name")
     email = click.prompt("Enter your email")
-    password = click.prompt("Enter your password", hide_input=True)  # hide input for password
+    password = click.prompt("Enter your password", hide_input=True) 
 
     hashed_password = User.hash_password(password)
     conn = get_connection()
