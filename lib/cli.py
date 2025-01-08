@@ -196,7 +196,7 @@ def expense():
     """Manage expenses"""
     pass
 
-# Command to add an expense
+# Command   to add an expense
 @expense.command()
 def add():
     """Add a new expense"""

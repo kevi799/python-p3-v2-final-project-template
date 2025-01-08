@@ -4,37 +4,51 @@
 
 The Personal Budget Tracker is a command-line interface (CLI) application that helps users manage their personal budgets, users, and expenses. This README will guide you through the setup and usage of the application.
 
+## Features
+
+- **User Management**: Add, view, and delete users.
+- **Budget Management**: Create, view, update, and delete budgets.
+- **Expense Tracking**: Record, view, update, and delete expenses.
+- **Password Security**: User passwords are hashed using bcrypt for secure storage.
+
 ## Prerequisites
 
 Before you begin, ensure you have the following installed on your machine:
 
-- Python 3.6 or higher
-- SQLite (comes pre-installed with Python)
-- `pip` (Python package installer)
+- **Python 3.6 or higher**
+- **SQLite** (comes pre-installed with Python)
+- **pip** (Python package installer)
 
 ## Installation
 
-1. **Clone the Repository**  
-   Open your terminal and run the following command to clone the repository:
+### Clone the Repository
 
-   ```bash
-   git clone https://github.com/yourusername/personal-budget-tracker.git
-   cd personal-budget-tracker
-   ```
+Open your terminal and run the following command to clone the repository:
 
-2. **Install Required Packages**  
-   Install the necessary Python packages using `pip`:
+```bash
+git clone https://github.com/yourusername/personal-budget-tracker.git
+cd personal-budget-tracker
+```
 
-   ```bash
-   pip install click bcrypt
-   ```
+````
 
-3. **Initialize the Database**  
-   The application requires a SQLite database. Run the following command to initialize the database:
-   ```bash
-   python -c "from your_module_name import init_db; init_db()"
-   ```
-   Replace `your_module_name` with the name of the Python file where the `init_db` function is defined.
+### Install Required Packages
+
+Install the necessary Python packages using pip:
+
+```bash
+pip install click bcrypt
+```
+
+### Initialize the Database
+
+The application requires a SQLite database. Run the following command to initialize the database:
+
+```bash
+python -c "from your_module_name import init_db; init_db()"
+```
+
+Replace `your_module_name` with the name of the Python file where the `init_db` function is defined.
 
 ## Running the CLI
 
@@ -46,57 +60,65 @@ python your_module_name.py
 
 Replace `your_module_name.py` with the name of your main Python file containing the CLI code.
 
-### Available Commands
+## Available Commands
 
 Once the CLI is running, you can use the following commands:
 
-- **User Management**
+### User Management
 
-  - `user add` - Add a new user
-  - `user view` - View all users
-  - `user delete <user_id>` - Delete a user by their ID
+- `user add`: Add a new user
+- `user view`: View all users
+- `user delete <user_id>`: Delete a user by their ID
 
-- **Budget Management**
+### Budget Management
 
-  - `budget add` - Add a new budget
-  - `budget view` - View all budgets
-  - `budget delete <budget_id>` - Delete a budget by its ID
+- `budget add`: Add a new budget
+- `budget view`: View all budgets
+- `budget update <budget_id>`: Update a budget by its ID
+- `budget delete <budget_id>`: Delete a budget by its ID
 
-- **Expense Management**
-  - `expense add` - Add a new expense
-  - `expense view` - View all expenses
+### Expense Management
 
-### Example Usage
+- `expense add`: Add a new expense
+- `expense view`: View all expenses
+- `expense update <expense_id>`: Update an expense by its ID
+- `expense delete <expense_id>`: Delete an expense by its ID
 
-1. **Add a User**
+## Example Usage
 
-   ```bash
-   python your_module_name.py user add
-   ```
+### Add a User
 
-   Follow the prompts to enter the user's name, email, and password.
+```bash
+python your_module_name.py user add
+```
 
-2. **View All Users**
+Follow the prompts to enter the user's name, email, and password.
 
-   ```bash
-   python your_module_name.py user view
-   ```
+### View All Users
 
-3. **Add a Budget**
+```bash
+python your_module_name.py user view
+```
 
-   ```bash
-   python your_module_name.py budget add
-   ```
+### Add a Budget
 
-4. **Add an Expense**
-   ```bash
-   python your_module_name.py expense add
-   ```
+```bash
+python your_module_name.py budget add
+```
+
+### Add an Expense
+
+```bash
+python your_module_name.py expense add
+```
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the LICENSE file for details.
 
 ## Author
 
-**Kevin Mulwa**
+Kevin Mulwa
+opy this Markdown text directly into your `README.md` file!
+```
+````
