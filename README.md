@@ -34,7 +34,6 @@ pipenv install
 pipenv shell
 ```
 
-
 ### Initialize the Database
 
 The application requires a SQLite database. Run the following command to initialize the database:
@@ -53,8 +52,8 @@ python cli.py user add: python cli.py
 
 
 =======
-python cli.py  
- 
+python cli.py
+
 >>>>>>> refs/remotes/origin/main
 ```
 
@@ -92,7 +91,7 @@ python cli.py
 ### Add a User
 
 ```bash
-python your_module_name.py user add
+python cli.py user add
 ```
 
 Follow the prompts to enter the user's name, email, and password.
@@ -100,19 +99,19 @@ Follow the prompts to enter the user's name, email, and password.
 ### View All Users
 
 ```bash
-python  user view
+python cli.py user view
 ```
 
 ### Add a Budget
 
 ```bash
-python  budget add
+python cli.py budget add
 ```
 
 ### Add an Expense
 
 ```bash
-python your_module expense add
+python cli.py expense add
 ```
 
 ## License
@@ -122,7 +121,3 @@ This project is licensed under the MIT License. See the LICENSE file for details
 ## Author
 
 Kevin Mulwa
-
-```
-
-```
