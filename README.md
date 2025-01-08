@@ -47,20 +47,17 @@ python lib/cli.py
 To run the CLI application, execute the following command in your terminal:
 
 ```bash
-<<<<<<< HEAD
-python cli.py user add: python cli.py
-
-
 =======
 python cli.py
-
->>>>>>> refs/remotes/origin/main
 ```
+
+ 1 Then follow the following instructions
 
 ## Available Commands
 
 Once the CLI is running, you can use the following commands:
-start by using the following command first to add view or delete the user,expense or budget
+
+Start by using the following command first to add view or delete the user,expense or budget
 
 ```
 python cli.py
