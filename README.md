@@ -30,9 +30,9 @@ Install the necessary Python packages using pip:
 
 ```bash
 pip install click bcrypt
-```
 pipenv install
 pipenv shell
+```
 
 
 ### Initialize the Database
