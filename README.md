@@ -31,13 +31,16 @@ Install the necessary Python packages using pip:
 ```bash
 pip install click bcrypt
 ```
+pipenv install
+pipenv shell
+
 
 ### Initialize the Database
 
 The application requires a SQLite database. Run the following command to initialize the database:
 
 ```bash
-python -c "budget_tracker.db; init_db()"
+python lib/cli.py
 ```
 
 ## Running the CLI
@@ -45,7 +48,7 @@ python -c "budget_tracker.db; init_db()"
 To run the CLI application, execute the following command in your terminal:
 
 ```bash
-python cli.py
+python cli.py 
 ```
 
 ## Available Commands
