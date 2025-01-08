@@ -45,12 +45,19 @@ python -c "budget_tracker.db; init_db()"
 To run the CLI application, execute the following command in your terminal:
 
 ```bash
-python cli.py
+python cli.py user add: python cli.py
+
+
 ```
 
 ## Available Commands
 
 Once the CLI is running, you can use the following commands:
+start by using the following command first to add view or delete the user,expense or budget
+
+```
+python cli.py
+```
 
 ### User Management
 
