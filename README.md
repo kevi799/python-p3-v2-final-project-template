@@ -48,7 +48,8 @@ python lib/cli.py
 To run the CLI application, execute the following command in your terminal:
 
 ```bash
-python cli.py 
+python cli.py  
+ 
 ```
 
 ## Available Commands
@@ -88,19 +89,19 @@ Follow the prompts to enter the user's name, email, and password.
 ### View All Users
 
 ```bash
-python your_module_name.py user view
+python  user view
 ```
 
 ### Add a Budget
 
 ```bash
-python your_module_name.py budget add
+python  budget add
 ```
 
 ### Add an Expense
 
 ```bash
-python your_module_name.py expense add
+python your_module expense add
 ```
 
 ## License
