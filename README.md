@@ -30,14 +30,17 @@ Install the necessary Python packages using pip:
 
 ```bash
 pip install click bcrypt
+pipenv install
+pipenv shell
 ```
+
 
 ### Initialize the Database
 
 The application requires a SQLite database. Run the following command to initialize the database:
 
 ```bash
-python -c "budget_tracker.db; init_db()"
+python lib/cli.py
 ```
 
 ## Running the CLI
@@ -45,9 +48,14 @@ python -c "budget_tracker.db; init_db()"
 To run the CLI application, execute the following command in your terminal:
 
 ```bash
+<<<<<<< HEAD
 python cli.py user add: python cli.py
 
 
+=======
+python cli.py  
+ 
+>>>>>>> refs/remotes/origin/main
 ```
 
 ## Available Commands
@@ -92,19 +100,19 @@ Follow the prompts to enter the user's name, email, and password.
 ### View All Users
 
 ```bash
-python your_module_name.py user view
+python  user view
 ```
 
 ### Add a Budget
 
 ```bash
-python your_module_name.py budget add
+python  budget add
 ```
 
 ### Add an Expense
 
 ```bash
-python your_module_name.py expense add
+python your_module expense add
 ```
 
 ## License
