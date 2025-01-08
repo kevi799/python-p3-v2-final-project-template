@@ -6,7 +6,7 @@ def get_connection():
     return sqlite3.connect("budget_tracker.db")
 
 def init_db():
-    """Initialize the database by creating the necessary tables if they don't exist."""
+   
     if not os.path.exists("budget_tracker.db"):
         print("Database file not found. Creating a new one...")
 

@@ -4,33 +4,25 @@
 
 The Personal Budget Tracker is a command-line interface (CLI) application that helps users manage their personal budgets, users, and expenses. This README will guide you through the setup and usage of the application.
 
-## Features
-
-- **User Management**: Add, view, and delete users.
-- **Budget Management**: Create, view, update, and delete budgets.
-- **Expense Tracking**: Record, view, update, and delete expenses.
-- **Password Security**: User passwords are hashed using bcrypt for secure storage.
-
 ## Prerequisites
 
 Before you begin, ensure you have the following installed on your machine:
 
 - **Python 3.6 or higher**
 - **SQLite** (comes pre-installed with Python)
-- **pip** (Python package installer)
+- **`pip`** (Python package installer)
 
 ## Installation
 
-### Clone the Repository
+1. **Clone the Repository**  
+   Open your terminal and run the following command to clone the repository:
 
-Open your terminal and run the following command to clone the repository:
+   ```bash
+   git clone https://github.com/kevi799/python-p3-v2-final-project-template
+   cd personal-budget-tracker
+   ```
 
-```bash
-git clone https://github.com/yourusername/personal-budget-tracker.git
-cd personal-budget-tracker
-```
-
-````
+# Installation and Usage Guide
 
 ### Install Required Packages
 
@@ -45,20 +37,16 @@ pip install click bcrypt
 The application requires a SQLite database. Run the following command to initialize the database:
 
 ```bash
-python -c "from your_module_name import init_db; init_db()"
+python -c "budget_tracker.db; init_db()"
 ```
-
-Replace `your_module_name` with the name of the Python file where the `init_db` function is defined.
 
 ## Running the CLI
 
 To run the CLI application, execute the following command in your terminal:
 
 ```bash
-python your_module_name.py
+python cli.py
 ```
-
-Replace `your_module_name.py` with the name of your main Python file containing the CLI code.
 
 ## Available Commands
 
@@ -119,6 +107,7 @@ This project is licensed under the MIT License. See the LICENSE file for details
 ## Author
 
 Kevin Mulwa
-opy this Markdown text directly into your `README.md` file!
+
 ```
-````
+
+```

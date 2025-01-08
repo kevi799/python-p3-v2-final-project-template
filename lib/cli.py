@@ -1,6 +1,6 @@
 import sqlite3
 import click
-from models.User import User  # Assuming you have a User model with hashing functionality
+from models.User import User  
 
 # Function to get the database connection
 def get_connection():
